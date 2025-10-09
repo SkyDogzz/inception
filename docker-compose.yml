@@ -1,0 +1,14 @@
+services:
+  nginx:
+    build: config/nginx
+    restart: unless-stopped
+  db:
+    build: config/db
+    restart: unless-stopped
+  wordpress:
+    build: config/wordpress
+    restart: unless-stopped
+
+networks:
+  lan:
+    driver: bridge
