@@ -1,1 +1,1 @@
-FROM wordpress:php8.4-fpm-alpine
+FROM alpine:3.23
