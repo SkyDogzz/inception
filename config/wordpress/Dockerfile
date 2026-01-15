@@ -20,9 +20,11 @@ RUN mkdir -p /var/www/html && \
     | tar -xz --strip-components=1 -C /var/www/html
 
 RUN sed -i \
-    -e 's|^;listen =.*|listen = 9000|' \
+    -e 's|^;listen =.*|listen = 0.0.0.0:9000|' \
+    -e 's|^listen = .*|listen = 0.0.0.0:9000|' \
     -e 's|^user =.*|user = nobody|' \
     -e 's|^group =.*|group = nobody|' \
+    -e 's|^;\\?listen.allowed_clients =.*|listen.allowed_clients = 0.0.0.0|' \
     -e 's|^;clear_env = no|clear_env = no|' \
     /etc/php83/php-fpm.d/www.conf
 

@@ -4,6 +4,8 @@ services:
     restart: unless-stopped
     depends_on:
      - db
+    volumes:
+      - wp_data:/var/www/html:ro
     ports:
       - "4443:443"
   db:
@@ -22,7 +24,12 @@ services:
     depends_on:
       - db
       - nginx
+    volumes:
+      - wp_data:/var/www/html
 
 networks:
   lan:
     driver: bridge
+
+volumes:
+  wp_data:
