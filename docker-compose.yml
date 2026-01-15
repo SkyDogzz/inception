@@ -2,12 +2,26 @@ services:
   nginx:
     build: config/nginx
     restart: unless-stopped
+    depends_on:
+     - db
   db:
     build: config/db
     restart: unless-stopped
+    volumes: 
+      - "/var/lib/mysql/data:${MARIADB_DATA_DIR}"
+      - "/var/lib/mysql/logs:${MARIADB_LOG_DIR}"
+      - /var/docker/mariadb/conf:/etc/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
   wordpress:
     build: config/wordpress
     restart: unless-stopped
+    depends_on:
+      - db
+      - nginx
 
 networks:
   lan:
