@@ -8,9 +8,7 @@ services:
     build: config/db
     restart: unless-stopped
     volumes: 
-      - "/var/lib/mysql/data:${MARIADB_DATA_DIR}"
-      - "/var/lib/mysql/logs:${MARIADB_LOG_DIR}"
-      - /var/docker/mariadb/conf:/etc/mysql
+      - "${MARIADB_DATA_DIR}:/var/lib/mysql"
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
