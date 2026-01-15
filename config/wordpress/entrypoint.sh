@@ -1,0 +1,60 @@
+#!/bin/sh
+set -eu
+
+WP="wp --path=/var/www/html --allow-root"
+
+require_env() {
+    name="$1"
+    value="$(printenv "$name" || true)"
+    if [ -z "$value" ]; then
+        echo "Missing required env var: $name" >&2
+        exit 1
+    fi
+}
+
+setup_wp() {
+    require_env MYSQL_DATABASE
+    require_env MYSQL_USER
+    require_env MYSQL_PASSWORD
+    require_env WP_URL
+    require_env WP_TITLE
+    require_env WP_ADMIN_USER
+    require_env WP_ADMIN_PASSWORD
+    require_env WP_ADMIN_EMAIL
+
+    if [ ! -f /var/www/html/wp-config.php ]; then
+        $WP config create \
+            --dbname="$MYSQL_DATABASE" \
+            --dbuser="$MYSQL_USER" \
+            --dbpass="$MYSQL_PASSWORD" \
+            --dbhost="db" \
+            --skip-check
+    fi
+
+    i=0
+    until nc -z db 3306 >/dev/null 2>&1; do
+        i=$((i + 1))
+        if [ "$i" -ge 60 ]; then
+            echo "Database not ready after 60 attempts." >&2
+            return 1
+        fi
+        sleep 2
+    done
+
+    if ! $WP core is-installed >/dev/null 2>&1; then
+        $WP core install \
+            --url="$WP_URL" \
+            --title="$WP_TITLE" \
+            --admin_user="$WP_ADMIN_USER" \
+            --admin_password="$WP_ADMIN_PASSWORD" \
+            --admin_email="$WP_ADMIN_EMAIL" \
+            --skip-email
+    fi
+}
+
+(
+    setup_wp && echo "WordPress setup complete." || \
+    echo "WordPress setup failed; php-fpm will still run." >&2
+) &
+
+exec php-fpm83 -F
