@@ -1,12 +1,123 @@
-all: up logs
+# ---------------------------------------------
+# Docker Compose Utilities Makefile 🖤🐳
+# ---------------------------------------------
 
+SHELL := /bin/bash
+
+# Compose command (modern Docker)
+DC := docker compose
+
+# Project (optional; helps when you run multiple stacks)
+# PROJ := myproject
+# DC := docker compose -p $(PROJ)
+
+# Compose files (optional; add more with -f)
+# FILES := -f docker-compose.yml -f docker-compose.override.yml
+# DC := docker compose $(FILES)
+
+# Service name for "make sh" / "make exec" (override: make sh SERVICE=api)
+SERVICE ?= app
+
+# Extra args passthrough (override: make logs ARGS="--tail=200 -f")
+ARGS ?=
+
+.DEFAULT_GOAL := help
+
+.PHONY: help
+help:
+	@echo ""
+	@echo "🦇 Docker Compose Makefile Commands 🖤"
+	@echo ""
+	@echo "  make up              → Start services (detached)"
+	@echo "  make down            → Stop and remove containers"
+	@echo "  make restart         → Restart stack"
+	@echo "  make ps              → List containers"
+	@echo "  make logs            → Follow logs (use ARGS='--tail=200 -f')"
+	@echo "  make build           → Build images"
+	@echo "  make pull            → Pull images"
+	@echo "  make start           → Start existing containers"
+	@echo "  make stop            → Stop containers"
+	@echo "  make rm              → Remove stopped containers"
+	@echo "  make config          → Print resolved compose config"
+	@echo ""
+	@echo "  make sh              → Shell into service (SERVICE=...)"
+	@echo "  make exec CMD='...'  → Exec command in service (SERVICE=...)"
+	@echo ""
+	@echo "  make clean           → Down + remove volumes + orphans"
+	@echo "  make nuke            → ⚠️ Remove EVERYTHING for this project (images, volumes)"
+	@echo ""
+
+# ---------------------------
+# Core lifecycle 🖤
+# ---------------------------
+.PHONY: up
 up:
-	docker compose up -d
+	$(DC) up -d
 
+.PHONY: down
 down:
-	docker compose down
+	$(DC) down
 
+.PHONY: restart
+restart:
+	$(DC) down
+	$(DC) up -d
+
+.PHONY: ps
+ps:
+	$(DC) ps
+
+.PHONY: logs
 logs:
-	docker compose logs -f
+	$(DC) logs $(ARGS)
 
-re: down all logs
+.PHONY: build
+build:
+	$(DC) build $(ARGS)
+
+.PHONY: pull
+pull:
+	$(DC) pull $(ARGS)
+
+.PHONY: start
+start:
+	$(DC) start
+
+.PHONY: stop
+stop:
+	$(DC) stop
+
+.PHONY: rm
+rm:
+	$(DC) rm -f $(ARGS)
+
+.PHONY: config
+config:
+	$(DC) config
+
+# ---------------------------
+# Handy dev tools 😳🖤
+# ---------------------------
+.PHONY: sh
+sh:
+	$(DC) exec $(SERVICE) sh || $(DC) exec $(SERVICE) bash
+
+.PHONY: exec
+exec:
+	@if [ -z "$(CMD)" ]; then \
+		echo "😳🖤 You must provide CMD, like: make exec SERVICE=app CMD='ls -la'"; \
+		exit 1; \
+	fi
+	$(DC) exec $(SERVICE) $(CMD)
+
+# ---------------------------
+# Cleanup rituals 🕯️
+# ---------------------------
+.PHONY: clean
+clean:
+	$(DC) down -v --remove-orphans
+
+.PHONY: nuke
+nuke:
+	@echo "⚠️🖤 NUKE MODE: removing containers, volumes, and images for this compose project..."
+	$(DC) down -v --remove-orphans --rmi local
