@@ -1,93 +1,62 @@
+*This project has been created as part of the 42 curriculum by skydogzz.*
+
 # Inception
 
-Docker Compose stack for a WordPress site fronted by Nginx with a MariaDB backend.
+## Description
+This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
 
-## Requirements
+## Instructions
 
+### Prerequisites
 - Docker Engine + Docker Compose v2 (`docker compose`)
 - GNU Make
 
-## Services
-
-- `nginx`: TLS terminator, serves WordPress content on port `4443`.
-- `wordpress`: PHP/WordPress container.
-- `db`: MariaDB storage for WordPress.
-
-## Ports
-
-- `4443:443` (Nginx HTTPS)
-
-## Volumes
-
-- `wp_data`: WordPress application files (`/var/www/html`).
-- `MARIADB_DATA_DIR`: MariaDB data directory (defaults to `./data/mariadb`).
-
-## Configuration
-
-Environment variables are loaded from `.env`.
-
-Required variables (defaults are in `.env`):
-
-- `MARIADB_DATA_DIR`
-- `MYSQL_ROOT_PASSWORD`
-- `MYSQL_DATABASE`
-- `MYSQL_USER`
-- `MYSQL_PASSWORD`
-- `WP_URL`
-- `WP_TITLE`
-- `WP_ADMIN_USER`
-- `WP_ADMIN_PASSWORD`
-- `WP_ADMIN_EMAIL`
-
-## Makefile commands
-
-All actions below are available via the Makefile.
-
-### Core lifecycle
-
-- `make up` → Start services in the background (`docker compose up -d`).
-- `make down` → Stop and remove containers (`docker compose down`).
-- `make restart` → Recreate the stack (down + up -d).
-- `make ps` → List running containers for this compose project.
-- `make logs` → Stream logs for the stack. Use `ARGS` to pass flags (example: `make logs ARGS="--tail=200 -f"`).
-- `make build` → Build images. Use `ARGS` to pass build flags.
-- `make pull` → Pull images. Use `ARGS` to pass pull flags.
-- `make start` → Start existing stopped containers.
-- `make stop` → Stop running containers.
-- `make rm` → Remove stopped containers. Use `ARGS` for extra flags.
-- `make config` → Print the fully resolved compose configuration.
-
-### Dev utilities
-
-- `make sh` → Open a shell in a service container. Defaults to `SERVICE=app`.
-  - Override example: `make sh SERVICE=wordpress`
-- `make exec CMD='...'` → Execute a command inside a service container.
-  - Example: `make exec SERVICE=wordpress CMD='wp --info'`
-
-### Cleanup
-
-- `make clean` → `down -v --remove-orphans` (removes containers, volumes, and orphans).
-- `make nuke` → Removes containers, volumes, and local images for this compose project.
-
-## Make variables
-
-The Makefile exposes a few variables for overrides:
-
-- `SERVICE` → Target service for `make sh` and `make exec` (default: `app`).
-- `CMD` → Required command for `make exec`.
-- `ARGS` → Extra flags passed to `logs`, `build`, `pull`, and `rm`.
-
-## Quick start
-
+### Build and run
 ```sh
 make up
 ```
 
-Then open:
+### Stop and remove
+```sh
+make down
+```
 
-- `https://127.0.0.1:4443`
+### Useful commands
+- `make build`
+- `make logs`
+- `make ps`
+- `make restart`
 
-## Notes
+### Access
+- Website: `https://<login>.42.fr` (subject requirement, mapped to your VM IP)
+- If your local compose maps a non-443 host port, use that host port instead.
 
-- If you change `.env`, restart the stack with `make restart` to apply changes.
-- The `make nuke` target is destructive; use it only when you want to wipe local images/volumes for this project.
+## Project details and design choices
+
+### Use of Docker and sources included
+- `docker-compose.yml` defines the services, volumes, and networking.
+- `config/nginx/Dockerfile`, `config/wordpress/Dockerfile`, `config/db/Dockerfile` build the images.
+- `Makefile` wraps common Docker Compose lifecycle commands.
+- `.env` provides runtime configuration values.
+
+### Subject compliance notes
+- Only TLSv1.2 or TLSv1.3 is allowed, and Nginx is the single entrypoint on port 443.
+- Images must be built locally from Alpine or Debian (no pulling service images, no `latest` tag).
+- Sensitive values must come from environment variables in `.env`; secrets are recommended for credentials.
+- Two WordPress users are required; the admin username must not contain `admin` or `administrator`.
+- WordPress and MariaDB must use Docker named volumes stored under `/home/<login>/data`.
+- Services must be connected via a Docker network and configured to restart on crash.
+
+### Comparisons
+- Virtual Machines vs Docker: VMs emulate full hardware and require separate guest OSes, while Docker shares the host kernel and isolates processes with cgroups/namespaces, making it lighter and faster to start.
+- Secrets vs Environment Variables: environment variables are convenient but visible in process metadata; Docker secrets are stored and mounted more securely and should be used for sensitive data.
+- Docker Network vs Host Network: Docker networks provide isolated service-to-service communication with DNS-based service discovery, while host networking removes isolation and can cause port conflicts.
+- Docker Volumes vs Bind Mounts: volumes are managed by Docker and are portable across hosts, while bind mounts directly map host paths and are more dependent on host layout and permissions.
+
+## Resources
+- Docker documentation: https://docs.docker.com/
+- Docker Compose reference: https://docs.docker.com/compose/
+- Nginx documentation: https://nginx.org/en/docs/
+- MariaDB documentation: https://mariadb.com/kb/en/documentation/
+- WordPress documentation: https://wordpress.org/support/
+- AI usage: used to draft and structure the documentation and to cross-check the project requirements; all content reviewed and adapted to this repository.

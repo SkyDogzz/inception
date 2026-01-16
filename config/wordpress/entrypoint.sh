@@ -21,6 +21,14 @@ setup_wp() {
     require_env WP_ADMIN_USER
     require_env WP_ADMIN_PASSWORD
     require_env WP_ADMIN_EMAIL
+    require_env WP_USER
+    require_env WP_USER_PASSWORD
+    require_env WP_USER_EMAIL
+
+    if echo "$WP_ADMIN_USER" | grep -qiE 'admin|administrator'; then
+        echo "WP_ADMIN_USER must not contain 'admin' or 'administrator'." >&2
+        exit 1
+    fi
 
     if [ ! -f /var/www/html/wp-config.php ]; then
         $WP config create \
@@ -49,6 +57,12 @@ setup_wp() {
             --admin_password="$WP_ADMIN_PASSWORD" \
             --admin_email="$WP_ADMIN_EMAIL" \
             --skip-email
+    fi
+
+    if ! $WP user get "$WP_USER" >/dev/null 2>&1; then
+        $WP user create "$WP_USER" "$WP_USER_EMAIL" \
+            --user_pass="$WP_USER_PASSWORD" \
+            --role=author
     fi
 }
 

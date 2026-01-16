@@ -33,6 +33,9 @@ services:
       WP_ADMIN_USER: "${WP_ADMIN_USER}"
       WP_ADMIN_PASSWORD: "${WP_ADMIN_PASSWORD}"
       WP_ADMIN_EMAIL: "${WP_ADMIN_EMAIL}"
+      WP_USER: "${WP_USER}"
+      WP_USER_PASSWORD: "${WP_USER_PASSWORD}"
+      WP_USER_EMAIL: "${WP_USER_EMAIL}"
     volumes:
       - wp_data:/var/www/html
 
