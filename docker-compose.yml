@@ -7,7 +7,7 @@ services:
     volumes:
       - wp_data:/var/www/html:ro
     ports:
-      - "4443:443"
+      - "443:443"
   db:
     build: config/db
     restart: unless-stopped
