@@ -7,7 +7,7 @@ services:
     volumes:
       - wp_data:/var/www/html:ro
     ports:
-      - "443:443"
+      - "4443:443"
   db:
     build: config/db
     restart: unless-stopped
@@ -18,6 +18,8 @@ services:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    ports:
+    - '3306:3306'
   wordpress:
     build: config/wordpress
     restart: unless-stopped

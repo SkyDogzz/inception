@@ -60,7 +60,7 @@ init_db() {
         FLUSH PRIVILEGES;
 SQL
 
-    mariadb-admin --protocol=socket --socket="$SOCKET" shutdown
+    mariadb-admin --protocol=socket --socket="$SOCKET" -uroot -p"$root_pass" shutdown
     wait "$pid"
 }
 
