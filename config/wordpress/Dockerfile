@@ -13,6 +13,7 @@ RUN apk add --no-cache \
     php83-phar \
     php83-tokenizer \
     php83-gd \
+    php83-ctype \
     php83-zip \
     curl \
     tar \
