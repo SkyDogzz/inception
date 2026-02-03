@@ -18,6 +18,7 @@ RUN apk add --no-cache \
     php83-pecl-redis \
     curl \
     tar \
+    unzip \
     netcat-openbsd
 
 RUN ln -sf /usr/bin/php83 /usr/bin/php
@@ -28,6 +29,11 @@ RUN mkdir -p /var/www/html && \
 
 RUN curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     -o /usr/local/bin/wp && chmod +x /usr/local/bin/wp
+
+RUN curl -fsSL https://downloads.wordpress.org/plugin/redis-cache.latest-stable.zip \
+    -o /tmp/redis-cache.zip && \
+    unzip -q /tmp/redis-cache.zip -d /var/www/html/wp-content/plugins && \
+    rm -f /tmp/redis-cache.zip
 
 RUN sed -i \
     -e 's|^;listen =.*|listen = 0.0.0.0:9000|' \

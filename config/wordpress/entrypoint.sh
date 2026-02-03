@@ -88,11 +88,7 @@ setup_wp() {
         sleep 2
     done
 
-    if ! $WP plugin is-installed redis-cache >/dev/null 2>&1; then
-        $WP plugin install redis-cache --activate
-    else
-        $WP plugin activate redis-cache >/dev/null 2>&1 || true
-    fi
+    $WP plugin activate redis-cache >/dev/null 2>&1 || true
 
     $WP redis enable >/dev/null 2>&1 || true
 }
