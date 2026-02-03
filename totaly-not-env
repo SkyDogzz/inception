@@ -13,6 +13,9 @@ WP_ADMIN_EMAIL="admin@example.com"
 WP_USER="editor"
 WP_USER_PASSWORD="editor123!"
 WP_USER_EMAIL="editor@example.com"
+WP_DEBUG=1
+WP_DEBUG_LOG=1
+WP_DEBUG_DISPLAY=1
 
 FTP_USER="ftpuser"
 FTP_PASSWORD="ftppass"
