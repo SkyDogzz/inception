@@ -5,6 +5,7 @@
 - WordPress: PHP application server for the website.
 - MariaDB: database backend for WordPress.
 - Adminer: lightweight database UI for MariaDB.
+- Redis: object cache backend for WordPress (via redis-cache plugin).
 
 ## Start and stop the project
 ```sh

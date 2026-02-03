@@ -3,7 +3,7 @@
 # Inception
 
 ## Description
-This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend, plus Adminer for database access and a static Apache page exposed under `/gateau/`. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
+This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend, plus Redis object caching, Adminer for database access, and a static Apache page exposed under `/gateau/`. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
 
 ## Instructions
 

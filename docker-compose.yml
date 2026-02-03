@@ -26,6 +26,7 @@ services:
     depends_on:
       - db
       - nginx
+      - redis
     environment:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
       MYSQL_USER: "${MYSQL_USER}"
@@ -48,6 +49,9 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+  redis:
+    build: config/redis
+    restart: unless-stopped
   gateau:
     build: config/gateau
     restart: unless-stopped
