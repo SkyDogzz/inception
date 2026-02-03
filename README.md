@@ -3,7 +3,7 @@
 # Inception
 
 ## Description
-This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
+This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend, plus Adminer for database access. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
 
 ## Instructions
 
@@ -35,7 +35,7 @@ make down
 
 ### Use of Docker and sources included
 - `docker-compose.yml` defines the services, volumes, and networking.
-- `config/nginx/Dockerfile`, `config/wordpress/Dockerfile`, `config/db/Dockerfile` build the images.
+- `config/nginx/Dockerfile`, `config/wordpress/Dockerfile`, `config/db/Dockerfile`, `config/adminer/Dockerfile` build the images.
 - `Makefile` wraps common Docker Compose lifecycle commands.
 - `.env` provides runtime configuration values.
 

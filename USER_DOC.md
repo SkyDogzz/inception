@@ -4,6 +4,7 @@
 - Nginx: TLS terminator and reverse proxy for the WordPress site.
 - WordPress: PHP application server for the website.
 - MariaDB: database backend for WordPress.
+- Adminer: lightweight database UI for MariaDB.
 
 ## Start and stop the project
 ```sh
@@ -17,6 +18,7 @@ make down
 ## Access the website and admin panel
 - Website: `https://<login>.42.fr` (subject requirement, points to your VM IP)
 - WordPress admin: `https://<login>.42.fr/wp-admin`
+- Adminer: `http://localhost:8080` (use your VM IP if not running locally)
 - If your compose maps a non-443 host port, use that host port instead.
 
 ## Locate and manage credentials
