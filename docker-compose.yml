@@ -7,12 +7,12 @@ services:
     volumes:
       - wp_data:/var/www/html:ro
     ports:
-      - "4443:443"
+      - "443:443"
   db:
     build: config/db
     restart: unless-stopped
     volumes: 
-      - "${MARIADB_DATA_DIR}:/var/lib/mysql"
+      - db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
@@ -47,3 +47,14 @@ networks:
 
 volumes:
   wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/tstephan/data/wordpress
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/tstephan/data/mariadb
