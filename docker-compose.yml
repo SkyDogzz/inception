@@ -53,6 +53,19 @@ services:
   gateau:
     build: config/gateau
     restart: unless-stopped
+  ftp:
+    build: config/ftp
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    environment:
+      FTP_USER: "${FTP_USER}"
+      FTP_PASSWORD: "${FTP_PASSWORD}"
+    volumes:
+      - wp_data:/var/www/html
+    ports:
+      - "127.0.0.1:21:21"
+      - "127.0.0.1:30000-30009:30000-30009"
 
 networks:
   lan:
