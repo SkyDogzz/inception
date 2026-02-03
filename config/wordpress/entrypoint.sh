@@ -39,6 +39,16 @@ setup_wp() {
             --skip-check
     fi
 
+    if [ -n "${WP_DEBUG:-}" ]; then
+        $WP config set WP_DEBUG "${WP_DEBUG}" --raw
+    fi
+    if [ -n "${WP_DEBUG_LOG:-}" ]; then
+        $WP config set WP_DEBUG_LOG "${WP_DEBUG_LOG}" --raw
+    fi
+    if [ -n "${WP_DEBUG_DISPLAY:-}" ]; then
+        $WP config set WP_DEBUG_DISPLAY "${WP_DEBUG_DISPLAY}" --raw
+    fi
+
     i=0
     until nc -z db 3306 >/dev/null 2>&1; do
         i=$((i + 1))

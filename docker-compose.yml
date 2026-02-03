@@ -38,6 +38,9 @@ services:
       WP_USER: "${WP_USER}"
       WP_USER_PASSWORD: "${WP_USER_PASSWORD}"
       WP_USER_EMAIL: "${WP_USER_EMAIL}"
+      WP_DEBUG: "${WP_DEBUG}"
+      WP_DEBUG_LOG: "${WP_DEBUG_LOG}"
+      WP_DEBUG_DISPLAY: "${WP_DEBUG_DISPLAY}"
     volumes:
       - wp_data:/var/www/html
 
