@@ -19,6 +19,7 @@ make down
 - Website: `https://<login>.42.fr` (subject requirement, points to your VM IP)
 - WordPress admin: `https://<login>.42.fr/wp-admin`
 - Adminer: `https://<login>.42.fr/adminer/`
+- Static bonus page (Apache httpd): `https://<login>.42.fr/gateau/`
 - If your compose maps a non-443 host port, use that host port instead.
 
 ## Locate and manage credentials

@@ -48,6 +48,9 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+  gateau:
+    build: config/gateau
+    restart: unless-stopped
 
 networks:
   lan:
