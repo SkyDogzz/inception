@@ -1,6 +1,6 @@
 services:
   nginx:
-    build: config/nginx
+    build: requirements/nginx
     restart: unless-stopped
     depends_on:
      - db
@@ -9,7 +9,7 @@ services:
     ports:
       - "443:443"
   db:
-    build: config/db
+    build: requirements/db
     restart: unless-stopped
     volumes: 
       - db_data:/var/lib/mysql
@@ -19,7 +19,7 @@ services:
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
   wordpress:
-    build: config/wordpress
+    build: requirements/wordpress
     restart: unless-stopped
     depends_on:
       - db
@@ -43,18 +43,18 @@ services:
     volumes:
       - wp_data:/var/www/html
   adminer:
-    build: config/adminer
+    build: requirements/adminer
     restart: unless-stopped
     depends_on:
       - db
   redis:
-    build: config/redis
+    build: requirements/redis
     restart: unless-stopped
   gateau:
-    build: config/gateau
+    build: requirements/gateau
     restart: unless-stopped
   ftp:
-    build: config/ftp
+    build: requirements/ftp
     restart: unless-stopped
     depends_on:
       - wordpress
@@ -67,7 +67,7 @@ services:
       - "127.0.0.1:21:21"
       - "127.0.0.1:30000-30009:30000-30009"
   backup:
-    build: config/backup
+    build: requirements/backup
     restart: unless-stopped
     depends_on:
       - db

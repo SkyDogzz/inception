@@ -5,7 +5,7 @@
 SHELL := /bin/bash
 
 # Compose command (modern Docker)
-DC := docker compose
+DC := docker compose -f srcs/docker-compose.yml
 
 # Project (optional; helps when you run multiple stacks)
 # PROJ := myproject
@@ -39,6 +39,10 @@ help:
 	@echo "  make stop            → Stop containers"
 	@echo "  make rm              → Remove stopped containers"
 	@echo "  make config          → Print resolved compose config"
+	@echo ""
+	@echo "  make init-data       → Create data folders + chmod 777"
+	@echo "  make wipe-data       → ⚠️ Remove /home/tstephan/data/*/*"
+	@echo "  make reset           → ⚠️ Nuke + wipe-data + up + logs -f"
 	@echo ""
 	@echo "  make sh              → Shell into service (SERVICE=...)"
 	@echo "  make exec CMD='...'  → Exec command in service (SERVICE=...)"
@@ -121,3 +125,22 @@ clean:
 nuke:
 	@echo "⚠️🖤 NUKE MODE: removing containers, volumes, and images for this compose project..."
 	$(DC) down -v --remove-orphans --rmi local
+
+# ---------------------------
+# Local data setup + full reset 🧹
+# ---------------------------
+.PHONY: init-data
+init-data:
+	@mkdir -p /home/tstephan/data/wordpress /home/tstephan/data/mariadb /home/tstephan/data/backups
+	@chmod 777 /home/tstephan/data/wordpress /home/tstephan/data/mariadb /home/tstephan/data/backups
+
+.PHONY: wipe-data
+wipe-data:
+	sudo rm -rf /home/tstephan/data/*/*
+
+.PHONY: logs-follow
+logs-follow:
+	$(DC) logs -f || true
+
+.PHONY: reset
+reset: nuke wipe-data up logs-follow
