@@ -66,6 +66,24 @@ services:
     ports:
       - "127.0.0.1:21:21"
       - "127.0.0.1:30000-30009:30000-30009"
+  backup:
+    build: config/backup
+    restart: unless-stopped
+    depends_on:
+      - db
+      - wordpress
+    environment:
+      MYSQL_HOST: "db"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      BACKUP_DIR: "/backups"
+      BACKUP_CRON: "${BACKUP_CRON}"
+      BACKUP_RETENTION_DAYS: "${BACKUP_RETENTION_DAYS}"
+      BACKUP_ON_START: "${BACKUP_ON_START}"
+    volumes:
+      - wp_data:/var/www/html:ro
+      - backup_data:/backups
 
 networks:
   lan:
@@ -84,3 +102,9 @@ volumes:
       type: none
       o: bind
       device: /home/tstephan/data/mariadb
+  backup_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/tstephan/data/backups

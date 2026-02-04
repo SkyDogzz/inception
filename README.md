@@ -3,7 +3,7 @@
 # Inception
 
 ## Description
-This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend, plus Redis object caching, an FTP container (vsftpd on Alpine) mounted on WordPress data, Adminer for database access, and a static Apache page exposed under `/gateau/`. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
+This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend, plus Redis object caching, an FTP container (vsftpd on Alpine) mounted on WordPress data, Adminer for database access, a static Apache page exposed under `/gateau/`, and a backup service that periodically dumps MariaDB and archives WordPress files. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
 
 ## Instructions
 
@@ -36,7 +36,7 @@ make down
 
 ### Use of Docker and sources included
 - `docker-compose.yml` defines the services, volumes, and networking.
-- `config/nginx/Dockerfile`, `config/wordpress/Dockerfile`, `config/db/Dockerfile`, `config/adminer/Dockerfile` build the images.
+- `config/nginx/Dockerfile`, `config/wordpress/Dockerfile`, `config/db/Dockerfile`, `config/adminer/Dockerfile`, `config/backup/Dockerfile` build the images.
 - `Makefile` wraps common Docker Compose lifecycle commands.
 - `.env` provides runtime configuration values.
 

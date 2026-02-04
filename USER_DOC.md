@@ -7,6 +7,7 @@
 - Adminer: lightweight database UI for MariaDB.
 - Redis: object cache backend for WordPress (via redis-cache plugin).
 - FTP: vsftpd service on Alpine, mounted on the WordPress volume.
+- Backup: scheduled MariaDB dumps and WordPress file archives stored in a dedicated backups volume.
 
 ## Start and stop the project
 ```sh
@@ -47,6 +48,10 @@ make logs
 ```sh
 make sh SERVICE=wordpress
 ```
+
+## Backups
+- Schedule and retention are configured in `.env` (`BACKUP_CRON`, `BACKUP_RETENTION_DAYS`).
+- Backups are stored under `/home/<login>/data/backups` on the host.
 
 ## Data storage locations
 - WordPress files and MariaDB data must be stored in Docker named volumes under `/home/<login>/data` on the host.

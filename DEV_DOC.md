@@ -56,3 +56,11 @@ make clean
 ## Data persistence and storage locations
 - MariaDB and WordPress data must live in Docker named volumes located under `/home/<login>/data` on the host.
 - Configure volume driver options in `docker-compose.yml` if you need to bind named volumes to that path.
+- Backup archives are stored in the `backup_data` volume under `/home/<login>/data/backups`.
+
+## Backup service
+- Configure scheduling with `BACKUP_CRON` and retention with `BACKUP_RETENTION_DAYS` in `.env`.
+- You can trigger a one-off backup by running:
+```sh
+make exec SERVICE=backup CMD="/usr/local/bin/backup.sh"
+```
