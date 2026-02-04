@@ -19,10 +19,10 @@ make down
 ```
 
 ## Access the website and admin panel
-- Website: `https://<login>.42.fr` (subject requirement, points to your VM IP)
-- WordPress admin: `https://<login>.42.fr/wp-admin`
-- Adminer: `https://<login>.42.fr/adminer/`
-- Static bonus page (Apache httpd): `https://<login>.42.fr/gateau/`
+- Website: `https://tstephan.42.fr` (subject requirement, points to your VM IP)
+- WordPress admin: `https://tstephan.42.fr/wp-admin`
+- Adminer: `https://tstephan.42.fr/adminer/`
+- Static bonus page (Apache httpd): `https://tstephan.42.fr/gateau/`
 - FTP (local VM only): host `127.0.0.1`, port `21`, passive ports `30000-30009`
 - If your compose maps a non-443 host port, use that host port instead.
 
@@ -51,7 +51,7 @@ make sh SERVICE=wordpress
 
 ## Backups
 - Schedule and retention are configured in `.env` (`BACKUP_CRON`, `BACKUP_RETENTION_DAYS`).
-- Backups are stored under `/home/<login>/data/backups` on the host.
+- Backups are stored under `/home/tstephan/data/backups` on the host.
 
 ## Data storage locations
-- WordPress files and MariaDB data must be stored in Docker named volumes under `/home/<login>/data` on the host.
+- WordPress files and MariaDB data must be stored in Docker named volumes under `/home/tstephan/data` on the host.

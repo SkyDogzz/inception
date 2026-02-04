@@ -28,8 +28,8 @@ make down
 - `make restart`
 
 ### Access
-- Website: `https://<login>.42.fr` (subject requirement, mapped to your VM IP)
-- Static bonus page: `https://<login>.42.fr/gateau/`
+- Website: `https://tstephan.42.fr` (subject requirement, mapped to your VM IP)
+- Static bonus page: `https://tstephan.42.fr/gateau/`
 - If your local compose maps a non-443 host port, use that host port instead.
 
 ## Project details and design choices
@@ -45,7 +45,7 @@ make down
 - Images must be built locally from Alpine or Debian (no pulling service images, no `latest` tag).
 - Sensitive values must come from environment variables in `.env`; secrets are recommended for credentials.
 - Two WordPress users are required; the admin username must not contain `admin` or `administrator`.
-- WordPress and MariaDB must use Docker named volumes stored under `/home/<login>/data`.
+- WordPress and MariaDB must use Docker named volumes stored under `/home/tstephan/data`.
 - Services must be connected via a Docker network and configured to restart on crash.
 
 ### Comparisons

@@ -16,10 +16,10 @@
 - For evaluation, replace sensitive values with Docker secrets where required by the subject.
 
 ### Subject-specific configuration
-- Set the domain to `"<login>.42.fr"` and point it to your VM IP.
+- Set the domain to `"tstephan.42.fr"` and point it to your VM IP.
 - Create two WordPress users; the admin username must not contain `admin` or `administrator`.
 - Ensure TLS is restricted to v1.2/v1.3 and only port 443 is exposed.
-- Ensure Docker named volumes are stored under `/home/<login>/data` on the host.
+- Ensure Docker named volumes are stored under `/home/tstephan/data` on the host.
 
 ## Build and launch
 
@@ -54,9 +54,9 @@ make clean
 ```
 
 ## Data persistence and storage locations
-- MariaDB and WordPress data must live in Docker named volumes located under `/home/<login>/data` on the host.
+- MariaDB and WordPress data must live in Docker named volumes located under `/home/tstephan/data` on the host.
 - Configure volume driver options in `docker-compose.yml` if you need to bind named volumes to that path.
-- Backup archives are stored in the `backup_data` volume under `/home/<login>/data/backups`.
+- Backup archives are stored in the `backup_data` volume under `/home/tstephan/data/backups`.
 
 ## Backup service
 - Configure scheduling with `BACKUP_CRON` and retention with `BACKUP_RETENTION_DAYS` in `.env`.
