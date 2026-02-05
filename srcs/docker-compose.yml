@@ -4,6 +4,8 @@ services:
     restart: unless-stopped
     depends_on:
      - db
+    environment:
+      DOMAIN: "${DOMAIN}"
     volumes:
       - wp_data:/var/www/html:ro
     ports:

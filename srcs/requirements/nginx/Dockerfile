@@ -8,7 +8,8 @@ RUN apk add --no-cache \
     wget \
     git \
     bash \
-    openssl
+    openssl \
+    gettext
 
 RUN mkdir -p /certs && \
     openssl req -x509 -nodes -newkey rsa:4096 \
@@ -18,8 +19,11 @@ RUN mkdir -p /certs && \
       -subj "/CN=localhost" && \
     mkdir -p /run/nginx
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf.template
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 443
 
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
