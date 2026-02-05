@@ -64,8 +64,10 @@ services:
     volumes:
       - wp_data:/var/www/html
     ports:
-      - "127.0.0.1:21:21"
-      - "127.0.0.1:30000-30009:30000-30009"
+      #- "127.0.0.1:21:21"
+      #- "127.0.0.1:30000-30009:30000-30009"
+      - "21:21"
+      - "30000-30009:30000-30009"
   backup:
     build: requirements/backup
     restart: unless-stopped
