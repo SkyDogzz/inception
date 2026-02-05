@@ -4,6 +4,7 @@ MYSQL_USER="user"
 MYSQL_PASSWORD="password"
 
 DOMAIN="tstephan.42.fr"
+ADMINER_ALLOWED_IPS="127.0.0.1,10.0.0.0/8"
 WP_URL="tstephan.42.fr"
 WP_TITLE="Inception"
 WP_ADMIN_USER="siteowner"

@@ -6,6 +6,7 @@ services:
      - db
     environment:
       DOMAIN: "${DOMAIN}"
+      ADMINER_ALLOWED_IPS: "${ADMINER_ALLOWED_IPS}"
     volumes:
       - wp_data:/var/www/html:ro
     ports:
