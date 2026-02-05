@@ -5,7 +5,7 @@
 SHELL := /bin/bash
 
 # Compose command (modern Docker)
-DC := docker compose -f srcs/docker-compose.yml
+DC := docker compose --env-file srcs/.env -f srcs/docker-compose.yml
 
 # Project (optional; helps when you run multiple stacks)
 # PROJ := myproject
@@ -131,16 +131,16 @@ nuke:
 # ---------------------------
 .PHONY: init-data
 init-data:
-	@mkdir -p /home/tstephan/data/wordpress /home/tstephan/data/mariadb /home/tstephan/data/backups
-	@chmod 777 /home/tstephan/data/wordpress /home/tstephan/data/mariadb /home/tstephan/data/backups
+	@sudo mkdir -p /home/tstephan/data/wordpress /home/tstephan/data/mariadb /home/tstephan/data/backups
+	@sudo chmod 777 /home/tstephan/data/wordpress /home/tstephan/data/mariadb /home/tstephan/data/backups
 
 .PHONY: wipe-data
 wipe-data:
-	sudo rm -rf /home/tstephan/data/*/*
+	sudo find /home/tstephan/data -mindepth 1 -delete
 
 .PHONY: logs-follow
 logs-follow:
 	$(DC) logs -f || true
 
 .PHONY: reset
-reset: nuke wipe-data up logs-follow
+reset: nuke wipe-data init-data up logs-follow
