@@ -1,24 +1,12 @@
 # ---------------------------------------------
-# Docker Compose Utilities Makefile 🖤🐳
+# Docker Compose Utilities Makefile 🐳
 # ---------------------------------------------
-
 SHELL := /bin/bash
 
-# Compose command (modern Docker)
 DC := docker compose --env-file srcs/.env -f srcs/docker-compose.yml
 
-# Project (optional; helps when you run multiple stacks)
-# PROJ := myproject
-# DC := docker compose -p $(PROJ)
-
-# Compose files (optional; add more with -f)
-# FILES := -f docker-compose.yml -f docker-compose.override.yml
-# DC := docker compose $(FILES)
-
-# Service name for "make sh" / "make exec" (override: make sh SERVICE=api)
 SERVICE ?= app
 
-# Extra args passthrough (override: make logs ARGS="--tail=200 -f")
 ARGS ?=
 
 .DEFAULT_GOAL := help
@@ -26,7 +14,7 @@ ARGS ?=
 .PHONY: help
 help:
 	@echo ""
-	@echo "🦇 Docker Compose Makefile Commands 🖤"
+	@echo "Docker Compose Makefile Commands"
 	@echo ""
 	@echo "  make up              → Start services (detached)"
 	@echo "  make down            → Stop and remove containers"
@@ -52,7 +40,7 @@ help:
 	@echo ""
 
 # ---------------------------
-# Core lifecycle 🖤
+# Core lifecycle
 # ---------------------------
 .PHONY: up
 up:
@@ -99,9 +87,6 @@ rm:
 config:
 	$(DC) config
 
-# ---------------------------
-# Handy dev tools 😳🖤
-# ---------------------------
 .PHONY: sh
 sh:
 	$(DC) exec $(SERVICE) sh || $(DC) exec $(SERVICE) bash
@@ -109,21 +94,18 @@ sh:
 .PHONY: exec
 exec:
 	@if [ -z "$(CMD)" ]; then \
-		echo "😳🖤 You must provide CMD, like: make exec SERVICE=app CMD='ls -la'"; \
+		echo "😳 You must provide CMD, like: make exec SERVICE=app CMD='ls -la'"; \
 		exit 1; \
 	fi
 	$(DC) exec $(SERVICE) $(CMD)
 
-# ---------------------------
-# Cleanup rituals 🕯️
-# ---------------------------
 .PHONY: clean
 clean:
 	$(DC) down -v --remove-orphans
 
 .PHONY: nuke
 nuke:
-	@echo "⚠️🖤 NUKE MODE: removing containers, volumes, and images for this compose project..."
+	@echo "⚠️ NUKE MODE: removing containers, volumes, and images for this compose project..."
 	$(DC) down -v --remove-orphans --rmi local
 
 # ---------------------------
