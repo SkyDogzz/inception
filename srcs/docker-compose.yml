@@ -21,6 +21,8 @@ services:
       - wp_data:/var/www/html:ro
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"
+    networks:
+      - lan
   db:
     build:
       context: requirements/db
@@ -34,6 +36,8 @@ services:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    networks:
+      - lan
   wordpress:
     build:
       context: requirements/wordpress
@@ -63,6 +67,8 @@ services:
       WP_DEBUG_DISPLAY: "${WP_DEBUG_DISPLAY}"
     volumes:
       - wp_data:/var/www/html
+    networks:
+      - lan
   adminer:
     build:
       context: requirements/adminer
@@ -71,18 +77,24 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+    networks:
+      - lan
   redis:
     build:
       context: requirements/redis
       args:
         REDIS_PORT: "${REDIS_PORT}"
     restart: unless-stopped
+    networks:
+      - lan
   gateau:
     build:
       context: requirements/gateau
       args:
         GATEAU_PORT: "${GATEAU_PORT}"
     restart: unless-stopped
+    networks:
+      - lan
   ftp:
     build:
       context: requirements/ftp
@@ -106,6 +118,8 @@ services:
       #- "127.0.0.1:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
       - "${FTP_PORT}:${FTP_PORT}"
       - "${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
+    networks:
+      - lan
   backup:
     build: requirements/backup
     restart: unless-stopped
@@ -124,10 +138,15 @@ services:
     volumes:
       - wp_data:/var/www/html:ro
       - backup_data:/backups
+    networks:
+      - lan
 
 networks:
   lan:
     driver: bridge
+    ipam:
+      config:
+        - subnet: "${LAN_SUBNET}"
 
 volumes:
   wp_data:

@@ -3,7 +3,7 @@
 # ---------------------------------------------
 SHELL := /bin/bash
 
-ENV_FILE ?= .env
+ENV_FILE ?= srcs/.env
 DC := docker compose --env-file $(ENV_FILE) -f srcs/docker-compose.yml
 
 SERVICE ?= app

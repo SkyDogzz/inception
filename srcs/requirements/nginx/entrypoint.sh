@@ -8,6 +8,13 @@ adminer_ips="${ADMINER_ALLOWED_IPS:-}"
 if [ -z "$adminer_ips" ]; then
   adminer_ips="127.0.0.1,::1"
 fi
+auto_cidr=""
+if command -v ip >/dev/null 2>&1; then
+  auto_cidr="$(ip -o -f inet addr show dev eth0 2>/dev/null | awk 'NR==1 {print $4}')"
+fi
+if [ -n "$auto_cidr" ]; then
+  adminer_ips="${adminer_ips},${auto_cidr}"
+fi
 rules=""
 old_ifs="$IFS"
 IFS=','
