@@ -37,7 +37,7 @@ setup_wp() {
       --dbname="$MYSQL_DATABASE" \
       --dbuser="$MYSQL_USER" \
       --dbpass="$MYSQL_PASSWORD" \
-      --dbhost="db" \
+      --dbhost="db:${DB_PORT}" \
       --skip-check
   fi
 
