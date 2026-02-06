@@ -21,6 +21,7 @@ rules="${rules}deny all;"
 ADMINER_ALLOW_RULES="$(printf "%b" "$rules")"
 export ADMINER_ALLOW_RULES
 
-envsubst '$DOMAIN $ADMINER_ALLOW_RULES' </etc/nginx/nginx.conf.template >/etc/nginx/nginx.conf
+envsubst '$DOMAIN $ADMINER_ALLOW_RULES $NGINX_PORT $ADMINER_PORT $GATEAU_PORT $WP_FPM_PORT' \
+  </etc/nginx/nginx.conf.template >/etc/nginx/nginx.conf
 
 exec "$@"

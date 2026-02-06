@@ -4,6 +4,8 @@ RUN apk add --no-cache redis
 
 COPY redis.conf /etc/redis.conf
 
-EXPOSE 6379
+ARG REDIS_PORT=6379
+RUN sed -i "s/^port .*/port ${REDIS_PORT}/" /etc/redis.conf
+EXPOSE ${REDIS_PORT}
 
 CMD ["redis-server", "/etc/redis.conf"]

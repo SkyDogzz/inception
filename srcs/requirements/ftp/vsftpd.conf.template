@@ -1,5 +1,6 @@
 listen=YES
 listen_ipv6=NO
+listen_port=${FTP_PORT}
 anonymous_enable=NO
 local_enable=YES
 write_enable=YES
@@ -12,8 +13,8 @@ chroot_local_user=YES
 allow_writeable_chroot=YES
 local_root=/var/www/html
 pasv_enable=YES
-pasv_min_port=30000
-pasv_max_port=30009
+pasv_min_port=${FTP_PASV_MIN_PORT}
+pasv_max_port=${FTP_PASV_MAX_PORT}
 seccomp_sandbox=NO
 pam_service_name=vsftpd
 userlist_enable=YES

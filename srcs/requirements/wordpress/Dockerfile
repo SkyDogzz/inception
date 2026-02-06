@@ -35,9 +35,11 @@ RUN curl -fsSL https://downloads.wordpress.org/plugin/redis-cache.latest-stable.
     unzip -q /tmp/redis-cache.zip -d /var/www/html/wp-content/plugins && \
     rm -f /tmp/redis-cache.zip
 
+ARG WP_FPM_PORT=9000
+
 RUN sed -i \
-    -e 's|^;listen =.*|listen = 0.0.0.0:9000|' \
-    -e 's|^listen = .*|listen = 0.0.0.0:9000|' \
+    -e "s|^;listen =.*|listen = 0.0.0.0:${WP_FPM_PORT}|" \
+    -e "s|^listen = .*|listen = 0.0.0.0:${WP_FPM_PORT}|" \
     -e 's|^user =.*|user = nobody|' \
     -e 's|^group =.*|group = nobody|' \
     -e 's|^listen.allowed_clients =.*|;listen.allowed_clients = 127.0.0.1|' \
@@ -47,7 +49,7 @@ RUN sed -i \
 
 WORKDIR /var/www/html
 
-EXPOSE 9000
+EXPOSE ${WP_FPM_PORT}
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

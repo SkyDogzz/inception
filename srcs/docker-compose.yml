@@ -1,18 +1,31 @@
 services:
   nginx:
-    build: requirements/nginx
+    build:
+      context: requirements/nginx
+      args:
+        NGINX_PORT: "${NGINX_PORT}"
+        ADMINER_PORT: "${ADMINER_PORT}"
+        GATEAU_PORT: "${GATEAU_PORT}"
+        WP_FPM_PORT: "${WP_FPM_PORT}"
     restart: unless-stopped
     depends_on:
      - db
     environment:
       DOMAIN: "${DOMAIN}"
       ADMINER_ALLOWED_IPS: "${ADMINER_ALLOWED_IPS}"
+      NGINX_PORT: "${NGINX_PORT}"
+      ADMINER_PORT: "${ADMINER_PORT}"
+      GATEAU_PORT: "${GATEAU_PORT}"
+      WP_FPM_PORT: "${WP_FPM_PORT}"
     volumes:
       - wp_data:/var/www/html:ro
     ports:
-      - "443:443"
+      - "${NGINX_PORT}:${NGINX_PORT}"
   db:
-    build: requirements/db
+    build:
+      context: requirements/db
+      args:
+        DB_PORT: "${DB_PORT}"
     restart: unless-stopped
     volumes: 
       - db_data:/var/lib/mysql
@@ -22,7 +35,10 @@ services:
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
   wordpress:
-    build: requirements/wordpress
+    build:
+      context: requirements/wordpress
+      args:
+        WP_FPM_PORT: "${WP_FPM_PORT}"
     restart: unless-stopped
     depends_on:
       - db
@@ -32,6 +48,8 @@ services:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      DB_PORT: "${DB_PORT}"
+      REDIS_PORT: "${REDIS_PORT}"
       WP_URL: "${WP_URL}"
       WP_TITLE: "${WP_TITLE}"
       WP_ADMIN_USER: "${WP_ADMIN_USER}"
@@ -46,31 +64,48 @@ services:
     volumes:
       - wp_data:/var/www/html
   adminer:
-    build: requirements/adminer
+    build:
+      context: requirements/adminer
+      args:
+        ADMINER_PORT: "${ADMINER_PORT}"
     restart: unless-stopped
     depends_on:
       - db
   redis:
-    build: requirements/redis
+    build:
+      context: requirements/redis
+      args:
+        REDIS_PORT: "${REDIS_PORT}"
     restart: unless-stopped
   gateau:
-    build: requirements/gateau
+    build:
+      context: requirements/gateau
+      args:
+        GATEAU_PORT: "${GATEAU_PORT}"
     restart: unless-stopped
   ftp:
-    build: requirements/ftp
+    build:
+      context: requirements/ftp
+      args:
+        FTP_PORT: "${FTP_PORT}"
+        FTP_PASV_MIN_PORT: "${FTP_PASV_MIN_PORT}"
+        FTP_PASV_MAX_PORT: "${FTP_PASV_MAX_PORT}"
     restart: unless-stopped
     depends_on:
       - wordpress
     environment:
       FTP_USER: "${FTP_USER}"
       FTP_PASSWORD: "${FTP_PASSWORD}"
+      FTP_PORT: "${FTP_PORT}"
+      FTP_PASV_MIN_PORT: "${FTP_PASV_MIN_PORT}"
+      FTP_PASV_MAX_PORT: "${FTP_PASV_MAX_PORT}"
     volumes:
       - wp_data:/var/www/html
     ports:
-      #- "127.0.0.1:21:21"
-      #- "127.0.0.1:30000-30009:30000-30009"
-      - "21:21"
-      - "30000-30009:30000-30009"
+      #- "127.0.0.1:${FTP_PORT}:${FTP_PORT}"
+      #- "127.0.0.1:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
+      - "${FTP_PORT}:${FTP_PORT}"
+      - "${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
   backup:
     build: requirements/backup
     restart: unless-stopped

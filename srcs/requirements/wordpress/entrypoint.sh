@@ -2,6 +2,8 @@
 set -eu
 
 WP="wp --path=/var/www/html --allow-root"
+DB_PORT="${DB_PORT:-3306}"
+REDIS_PORT="${REDIS_PORT:-6379}"
 
 require_env() {
   name="$1"
@@ -50,10 +52,10 @@ setup_wp() {
   fi
 
   $WP config set WP_REDIS_HOST 'redis'
-  $WP config set WP_REDIS_PORT '6379'
+  $WP config set WP_REDIS_PORT "${REDIS_PORT}"
 
   i=0
-  until nc -z db 3306 >/dev/null 2>&1; do
+  until nc -z db "${DB_PORT}" >/dev/null 2>&1; do
     i=$((i + 1))
     if [ "$i" -ge 60 ]; then
       echo "Database not ready after 60 attempts." >&2
@@ -79,7 +81,7 @@ setup_wp() {
   fi
 
   i=0
-  until nc -z redis 6379 >/dev/null 2>&1; do
+  until nc -z redis "${REDIS_PORT}" >/dev/null 2>&1; do
     i=$((i + 1))
     if [ "$i" -ge 60 ]; then
       echo "Redis not ready after 60 attempts." >&2
