@@ -9,7 +9,7 @@ RUN mkdir -p /run/mysqld /var/lib/mysql && \
 
 COPY mariadb.conf /etc/my.cnf.d/zzz-custom.cnf
 
-ARG DB_PORT=3306
+ARG DB_PORT
 RUN sed -i "s/^port=.*/port=${DB_PORT}/" /etc/my.cnf.d/zzz-custom.cnf
 EXPOSE ${DB_PORT}
 

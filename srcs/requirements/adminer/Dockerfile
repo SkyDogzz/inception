@@ -17,7 +17,7 @@ RUN curl -fsSL \
     https://github.com/vrana/adminer/releases/download/v${ADMINER_VERSION}/adminer-${ADMINER_VERSION}.php \
     -o /var/www/html/index.php
 
-ARG ADMINER_PORT=8080
+ARG ADMINER_PORT
 ENV ADMINER_PORT="${ADMINER_PORT}"
 EXPOSE ${ADMINER_PORT}
 

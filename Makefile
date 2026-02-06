@@ -3,7 +3,8 @@
 # ---------------------------------------------
 SHELL := /bin/bash
 
-DC := docker compose --env-file srcs/.env -f srcs/docker-compose.yml
+ENV_FILE ?= .env
+DC := docker compose --env-file $(ENV_FILE) -f srcs/docker-compose.yml
 
 SERVICE ?= app
 
@@ -65,6 +66,7 @@ logs:
 
 .PHONY: build
 build:
+	./scripts/check-env-ports.sh $(ENV_FILE)
 	$(DC) build $(ARGS)
 
 .PHONY: pull

@@ -3,9 +3,19 @@ set -eu
 
 FTP_USER="${FTP_USER:-ftpuser}"
 FTP_PASSWORD="${FTP_PASSWORD:-ftppass}"
-FTP_PORT="${FTP_PORT:-21}"
-FTP_PASV_MIN_PORT="${FTP_PASV_MIN_PORT:-30000}"
-FTP_PASV_MAX_PORT="${FTP_PASV_MAX_PORT:-30009}"
+
+require_env() {
+  name="$1"
+  value="$(printenv "$name" || true)"
+  if [ -z "$value" ]; then
+    echo "Missing required env var: $name" >&2
+    exit 1
+  fi
+}
+
+require_env FTP_PORT
+require_env FTP_PASV_MIN_PORT
+require_env FTP_PASV_MAX_PORT
 
 if ! id -u "$FTP_USER" >/dev/null 2>&1; then
   adduser -D -h /var/www/html -s /sbin/nologin "$FTP_USER"

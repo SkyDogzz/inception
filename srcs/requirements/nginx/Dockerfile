@@ -23,7 +23,7 @@ COPY nginx.conf /etc/nginx/nginx.conf.template
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-ARG NGINX_PORT=443
+ARG NGINX_PORT
 EXPOSE ${NGINX_PORT}
 
 ENTRYPOINT ["/entrypoint.sh"]

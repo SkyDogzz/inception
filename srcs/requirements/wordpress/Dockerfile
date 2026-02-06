@@ -35,7 +35,7 @@ RUN curl -fsSL https://downloads.wordpress.org/plugin/redis-cache.latest-stable.
     unzip -q /tmp/redis-cache.zip -d /var/www/html/wp-content/plugins && \
     rm -f /tmp/redis-cache.zip
 
-ARG WP_FPM_PORT=9000
+ARG WP_FPM_PORT
 
 RUN sed -i \
     -e "s|^;listen =.*|listen = 0.0.0.0:${WP_FPM_PORT}|" \

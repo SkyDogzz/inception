@@ -2,8 +2,6 @@
 set -eu
 
 WP="wp --path=/var/www/html --allow-root"
-DB_PORT="${DB_PORT:-3306}"
-REDIS_PORT="${REDIS_PORT:-6379}"
 
 require_env() {
   name="$1"
@@ -26,6 +24,8 @@ setup_wp() {
   require_env WP_USER
   require_env WP_USER_PASSWORD
   require_env WP_USER_EMAIL
+  require_env DB_PORT
+  require_env REDIS_PORT
 
   if echo "$WP_ADMIN_USER" | grep -qiE 'admin|administrator'; then
     echo "WP_ADMIN_USER must not contain 'admin' or 'administrator'." >&2
