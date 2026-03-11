@@ -31,9 +31,8 @@ RUN curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-
     -o /usr/local/bin/wp && chmod +x /usr/local/bin/wp
 
 RUN curl -fsSL https://downloads.wordpress.org/plugin/redis-cache.latest-stable.zip \
-    -o /tmp/redis-cache.zip && \
-    unzip -q /tmp/redis-cache.zip -d /var/www/html/wp-content/plugins && \
-    rm -f /tmp/redis-cache.zip
+    -o /usr/local/share/redis-cache.zip && \
+    unzip -q /usr/local/share/redis-cache.zip -d /var/www/html/wp-content/plugins
 
 ARG WP_FPM_PORT
 

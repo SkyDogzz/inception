@@ -12,6 +12,17 @@ require_env() {
   fi
 }
 
+ensure_redis_plugin() {
+  if [ ! -d /var/www/html/wp-content/plugins/redis-cache ]; then
+    if [ -f /usr/local/share/redis-cache.zip ]; then
+      unzip -q /usr/local/share/redis-cache.zip -d /var/www/html/wp-content/plugins
+    else
+      echo "Redis cache plugin zip not found; cannot install redis-cache." >&2
+      return 1
+    fi
+  fi
+}
+
 setup_wp() {
   require_env MYSQL_DATABASE
   require_env MYSQL_USER
@@ -90,9 +101,9 @@ setup_wp() {
     sleep 2
   done
 
-  $WP plugin activate redis-cache >/dev/null 2>&1 || true
-
-  $WP redis enable >/dev/null 2>&1 || true
+  ensure_redis_plugin
+  $WP plugin activate redis-cache >/dev/null 2>&1
+  $WP redis enable >/dev/null 2>&1
 }
 
 (
