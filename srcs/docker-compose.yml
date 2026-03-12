@@ -54,6 +54,7 @@ services:
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       DB_PORT: "${DB_PORT}"
       REDIS_PORT: "${REDIS_PORT}"
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
       WP_URL: "${WP_URL}"
       WP_TITLE: "${WP_TITLE}"
       WP_ADMIN_USER: "${WP_ADMIN_USER}"
@@ -84,6 +85,7 @@ services:
       context: requirements/redis
       args:
         REDIS_PORT: "${REDIS_PORT}"
+        REDIS_PASSWORD: "${REDIS_PASSWORD}"
     restart: unless-stopped
     networks:
       - lan
