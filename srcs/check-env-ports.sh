@@ -27,11 +27,3 @@ if [ -n "$missing" ]; then
   echo "Missing required port env vars in $ENV_FILE:${missing}" >&2
   exit 1
 fi
-
-cat <<'EOF'
-  ____  ____  _____  _____  _____
- / ___||  _ \| ____|| ____|| ____|
- \___ \| |_) |  _|  |  _|  |  _|
-  ___) |  __/| |___ | |___ | |___
- |____/|_|   |_____||_____||_____|
-EOF

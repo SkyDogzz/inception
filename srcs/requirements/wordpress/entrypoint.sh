@@ -64,7 +64,7 @@ setup_wp() {
 
   $WP config set WP_REDIS_HOST 'redis'
   $WP config set WP_REDIS_PORT "${REDIS_PORT}"
-  $WP config set WP_REDIS_PASSWORD "${REDIS_PASSWORD}" --raw
+  $WP config set WP_REDIS_PASSWORD "${REDIS_PASSWORD}"
 
   i=0
   until nc -z db "${DB_PORT}" >/dev/null 2>&1; do
