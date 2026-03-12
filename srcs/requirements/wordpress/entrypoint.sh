@@ -103,7 +103,13 @@ setup_wp() {
 
   ensure_redis_plugin
   $WP plugin activate redis-cache >/dev/null 2>&1
-  $WP redis enable >/dev/null 2>&1
+  $WP redis enable >/dev/null 2>&1 || true
+  if [ ! -f /var/www/html/wp-content/object-cache.php ]; then
+    $WP redis enable >/dev/null 2>&1 || true
+  fi
+  if [ ! -f /var/www/html/wp-content/object-cache.php ]; then
+    echo "Redis object cache drop-in missing; redis-cache not enabled." >&2
+  fi
 }
 
 (
