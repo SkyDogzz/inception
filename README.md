@@ -3,7 +3,7 @@
 # Inception
 
 ## Description
-This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend, plus Redis object caching, an FTP container (vsftpd on Alpine) mounted on WordPress data, Adminer for database access, a static Apache page exposed under `/gateau/`, and a backup service that periodically dumps MariaDB and archives WordPress files. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
+This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend, plus Redis object caching, an FTP container (vsftpd on Alpine) mounted on WordPress data, Adminer for database access, a static Apache page exposed on a `gateau` subdomain, and a backup service that periodically dumps MariaDB and archives WordPress files. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
 
 ## Instructions
 
@@ -29,16 +29,16 @@ make down
 
 ### Access
 - Website: `https://tstephan.42.fr` (subject requirement, mapped to your VM IP)
-- Static bonus page: `https://tstephan.42.fr/gateau/`
+- Static bonus page: `https://gateau.tstephan.42.fr/`
 - If your local compose maps a non-443 host port, use that host port instead.
 
 ## Project details and design choices
 
 ### Use of Docker and sources included
-- `docker-compose.yml` defines the services, volumes, and networking.
-- `config/nginx/Dockerfile`, `config/wordpress/Dockerfile`, `config/db/Dockerfile`, `config/adminer/Dockerfile`, `config/backup/Dockerfile` build the images.
+- `srcs/docker-compose.yml` defines the services, volumes, and networking.
+- `srcs/requirements/*/Dockerfile` build the images.
 - `Makefile` wraps common Docker Compose lifecycle commands.
-- `.env` provides runtime configuration values.
+- `srcs/.env` provides runtime configuration values.
 
 ### Subject compliance notes
 - Only TLSv1.2 or TLSv1.3 is allowed, and Nginx is the single entrypoint on port 443.

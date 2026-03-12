@@ -115,11 +115,11 @@ services:
       FTP_PASV_MAX_PORT: "${FTP_PASV_MAX_PORT}"
     volumes:
       - wp_data:/var/www/html
-    ports:
-      #- "127.0.0.1:${FTP_PORT}:${FTP_PORT}"
-      #- "127.0.0.1:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
-      - "${FTP_PORT}:${FTP_PORT}"
-      - "${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
+    # ports:
+    #   - "127.0.0.1:${FTP_PORT}:${FTP_PORT}"
+    #   - "127.0.0.1:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
+    #   - "${FTP_PORT}:${FTP_PORT}"
+    #   - "${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}:${FTP_PASV_MIN_PORT}-${FTP_PASV_MAX_PORT}"
     networks:
       - lan
   backup:

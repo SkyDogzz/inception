@@ -21,8 +21,8 @@ make down
 ## Access the website and admin panel
 - Website: `https://tstephan.42.fr` (subject requirement, points to your VM IP)
 - WordPress admin: `https://tstephan.42.fr/wp-admin`
-- Adminer: `https://tstephan.42.fr/adminer/`
-- Static bonus page (Apache httpd): `https://tstephan.42.fr/gateau/`
+- Adminer: `https://adminer.tstephan.42.fr/`
+- Static bonus page (Apache httpd): `https://gateau.tstephan.42.fr/`
 - FTP (local VM only): host `127.0.0.1`, port `21`, passive ports `30000-30009`
 - If your compose maps a non-443 host port, use that host port instead.
 
