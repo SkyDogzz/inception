@@ -48,9 +48,12 @@ setup_wp() {
       --dbname="$MYSQL_DATABASE" \
       --dbuser="$MYSQL_USER" \
       --dbpass="$MYSQL_PASSWORD" \
-      --dbhost="db:${DB_PORT}" \
+      --dbhost="mariadb:${DB_PORT}" \
       --skip-check
   fi
+
+  # Ensure DB_HOST stays aligned with the Docker service name.
+  $WP config set DB_HOST "mariadb:${DB_PORT}" --type=constant --quiet
 
   if [ -n "${WP_DEBUG:-}" ]; then
     $WP config set WP_DEBUG "${WP_DEBUG}" --raw
@@ -67,7 +70,7 @@ setup_wp() {
   $WP config set WP_REDIS_PASSWORD "${REDIS_PASSWORD}"
 
   i=0
-  until nc -z db "${DB_PORT}" >/dev/null 2>&1; do
+  until nc -z mariadb "${DB_PORT}" >/dev/null 2>&1; do
     i=$((i + 1))
     if [ "$i" -ge 60 ]; then
       echo "Database not ready after 60 attempts." >&2
