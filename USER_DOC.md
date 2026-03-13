@@ -10,6 +10,8 @@
 - Backup: scheduled MariaDB dumps and WordPress file archives stored in a dedicated backups volume.
 
 ## Start and stop the project
+Run Makefile commands from the repository root (where `Makefile` is located).
+
 ```sh
 make up
 ```
@@ -27,10 +29,10 @@ make down
 - If your compose maps a non-443 host port, use that host port instead.
 
 ## Locate and manage credentials
-- Credentials are stored in `.env` at the repository root.
+- Credentials are stored in `srcs/.env`.
 - FTP credentials are `FTP_USER` and `FTP_PASSWORD`.
 - Do not commit real secrets; use Docker secrets if required by your evaluation.
-- Update values in `.env`, then apply changes with:
+- Update values in `srcs/.env`, then apply changes with:
 ```sh
 make restart
 ```

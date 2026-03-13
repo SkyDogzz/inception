@@ -7,9 +7,9 @@
 - GNU Make
 
 ### Configuration files
-- `.env`: environment variables for the stack (database credentials, site URL, admin user).
-- `docker-compose.yml`: service topology and volumes.
-- `config/`: service Dockerfiles and configuration.
+- `srcs/.env`: environment variables for the stack (database credentials, site URL, admin user).
+- `srcs/docker-compose.yml`: service topology, networks, and volumes.
+- `srcs/requirements/`: service Dockerfiles and configuration.
 
 ### Secrets
 - This repository stores credentials in `.env` for local development.
@@ -24,6 +24,8 @@
 ## Build and launch
 
 ### Using the Makefile
+Run Makefile commands from the repository root (where `Makefile` is located).
+
 ```sh
 make build
 make up
@@ -31,8 +33,8 @@ make up
 
 ### Using Docker Compose directly
 ```sh
-docker compose build
-docker compose up -d
+docker compose -f srcs/docker-compose.yml --env-file srcs/.env build
+docker compose -f srcs/docker-compose.yml --env-file srcs/.env up -d
 ```
 
 ## Managing containers and volumes
@@ -42,6 +44,8 @@ docker compose up -d
 - `make logs`
 - `make restart`
 - `make down`
+- `make sh SERVICE=<service>` (open a shell in a container)
+- `make exec SERVICE=<service> CMD="<command>"`
 
 ### Inspect volumes
 ```sh
@@ -55,7 +59,7 @@ make clean
 
 ## Data persistence and storage locations
 - MariaDB and WordPress data must live in Docker named volumes located under `/home/tstephan/data` on the host.
-- Configure volume driver options in `docker-compose.yml` if you need to bind named volumes to that path.
+- Configure volume driver options in `srcs/docker-compose.yml` if you need to bind named volumes to that path.
 - Backup archives are stored in the `backup_data` volume under `/home/tstephan/data/backups`.
 
 ## Backup service

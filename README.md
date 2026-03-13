@@ -3,7 +3,7 @@
 # Inception
 
 ## Description
-This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend, plus Redis object caching, an FTP container (vsftpd on Alpine) mounted on WordPress data, Adminer for database access, a static Apache page exposed on a `gateau` subdomain, and a backup service that periodically dumps MariaDB and archives WordPress files. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules.
+This project sets up a small Docker-based infrastructure for a WordPress site served by Nginx with a MariaDB backend, plus Redis object caching, an FTP container (vsftpd on Alpine) mounted on WordPress data, Adminer for database access, a static Apache page exposed on a `gateau` subdomain, and a backup service that periodically dumps MariaDB and archives WordPress files. The stack is built with Docker Compose and uses custom Dockerfiles for each service, following the Inception subject rules. It relies on `srcs/docker-compose.yml` for service definitions, `srcs/requirements/*/Dockerfile` for image builds, `srcs/.env` for runtime configuration, and the `Makefile` for common lifecycle commands. Main design choices include a single TLS-terminating Nginx entrypoint, isolated services on a Docker network, and persistent data stored in Docker named volumes. Comparisons: Virtual Machines vs Docker (full OS emulation vs shared-kernel containers), Secrets vs Environment Variables (more secure mounted files vs convenient but visible env vars), Docker Network vs Host Network (isolated DNS-based service discovery vs reduced isolation and port conflicts), Docker Volumes vs Bind Mounts (portable managed storage vs host-path dependent mappings).
 
 ## Instructions
 
@@ -34,12 +34,6 @@ make down
 
 ## Project details and design choices
 
-### Use of Docker and sources included
-- `srcs/docker-compose.yml` defines the services, volumes, and networking.
-- `srcs/requirements/*/Dockerfile` build the images.
-- `Makefile` wraps common Docker Compose lifecycle commands.
-- `srcs/.env` provides runtime configuration values.
-
 ### Subject compliance notes
 - Only TLSv1.2 or TLSv1.3 is allowed, and Nginx is the single entrypoint on port 443.
 - Images must be built locally from Alpine or Debian (no pulling service images, no `latest` tag).
@@ -60,4 +54,4 @@ make down
 - Nginx documentation: https://nginx.org/en/docs/
 - MariaDB documentation: https://mariadb.com/kb/en/documentation/
 - WordPress documentation: https://wordpress.org/support/
-- AI usage: used to draft and structure the documentation and to cross-check the project requirements; all content reviewed and adapted to this repository.
+- AI usage: used only for README drafting and wording (Description, Instructions, and Resources sections) and to sanity-check the Inception subject requirements; no code or configuration was generated. All content was reviewed and adapted to this repository.
